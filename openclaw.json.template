@@ -1,0 +1,96 @@
+{
+  "$schema": "https://openclaw.ai/schema/openclaw.json",
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "9router/deepseek-v3"
+      },
+      "workspace": "/home/ubuntu/openclaw-agent/workspace",
+      "heartbeat": {
+        "every": "5m"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "9router": {
+        "baseUrl": "http://127.0.0.1:20128/v1",
+        "apiKey": "not-needed",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "deepseek-v3",
+            "name": "DeepSeek V3 (9Router)",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 65536,
+            "maxTokens": 8192
+          }
+        ]
+      }
+    }
+  },
+  "tools": {
+    "exec": {
+      "security": "full",
+      "ask": "off"
+    },
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "duckduckgo"
+      }
+    }
+  },
+  "browser": {
+    "enabled": true,
+    "headless": true
+  },
+  "gateway": {
+    "mode": "local",
+    "port": 18789,
+    "controlUi": {
+      "enabled": true,
+      "dangerouslyAllowHostHeaderOriginFallback": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "7506b792ff4e8375bffdc09a3e38ed637fa2e9db6a4c92c8"
+    }
+  },
+  "plugins": {
+    "allow": [
+      "browser",
+      "memory-core"
+    ],
+    "entries": {
+      "browser": {
+        "enabled": true
+      }
+    }
+  },
+  "mcp": {
+    "servers": {
+      "filesystem": {
+        "command": "npx",
+        "args": [
+          "@modelcontextprotocol/server-filesystem",
+          "/home/ubuntu/openclaw-agent/workspace"
+        ]
+      }
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.4.24",
+    "lastTouchedAt": "2026-04-26T11:46:17.254Z"
+  }
+}

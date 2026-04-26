@@ -1,0 +1,23 @@
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# OpenClaw state (auth tokens, logs, etc.)
+# Note: openclaw.json is the config template, NOT the live config
+*.log
+*.bak
+
+# Environment with secrets
+# .env is committed as template - no real secrets in it
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Workspace data (user-created files)
+workspace/*
+!workspace/.gitkeep
