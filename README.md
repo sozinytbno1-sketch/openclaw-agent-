@@ -1,4 +1,4 @@
-# OpenClaw Agent
+# OpenClaw Agent (Windows)
 
 An agentic AI assistant with **Hermes-like capabilities** powered by OpenClaw, connected to your 9Router endpoint.
 
@@ -20,7 +20,7 @@ An agentic AI assistant with **Hermes-like capabilities** powered by OpenClaw, c
            │          │          │
     ┌──────┴───┐ ┌────┴────┐ ┌──┴──────────┐
     │ Browser  │ │  Exec   │ │ Filesystem  │
-    │ (Chrome) │ │ (Shell) │ │ (MCP+Built)│
+    │ (Chrome) │ │ (Shell) │ │ (MCP+Built) │
     └──────────┘ └─────────┘ └─────────────┘
            │          │          │
     ┌──────┴───┐ ┌────┴────┐ ┌──┴──────────┐
@@ -38,18 +38,36 @@ An agentic AI assistant with **Hermes-like capabilities** powered by OpenClaw, c
 | **File Management** | `read`, `write`, `edit` + MCP filesystem | Read, write, edit files in workspace |
 | **Web Fetch** | `web_fetch` | Fetch and parse web page content |
 
-## Quick Start
+## Prerequisites
 
-```bash
-# 1. Run setup (installs everything)
-./scripts/setup.sh
+- **Windows 10/11**
+- **Node.js >= 22.14** (24 recommended) — [Download](https://nodejs.org/en/download)
+- **Python 3.10+** — [Download](https://www.python.org/downloads/)
+- **Git** — [Download](https://git-scm.com/download/win)
+- **9Router** running on `http://127.0.0.1:20128/v1`
 
-# 2. Start the agent
-./scripts/start.sh
+## Quick Start (PowerShell)
 
-# 3. Open Web UI
+```powershell
+# 1. Clone the repo
+git clone https://github.com/sozinytbno1-sketch/openclaw-agent-.git
+cd openclaw-agent-
+
+# 2. Run setup (installs OpenClaw, Python venv, Playwright, MCP server)
+.\scripts\setup.ps1
+
+# 3. Start the agent
+.\scripts\start.ps1
+
+# 4. Open Web UI
 # Navigate to http://localhost:18789
+# Use: openclaw dashboard --no-open   to get URL with auth token
 ```
+
+> **Note:** If PowerShell blocks script execution, run this first:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 ## Configuration
 
@@ -59,30 +77,33 @@ An agentic AI assistant with **Hermes-like capabilities** powered by OpenClaw, c
 - **API**: OpenAI-compatible completions
 
 ### Config File
-Main config: `~/.openclaw/openclaw.json`
+The setup script copies `openclaw.json.template` to `%USERPROFILE%\.openclaw\openclaw.json`.
 
-### Environment
-Environment vars: `.env`
+**Important:** After copying, edit the `workspace` path and `mcp.servers.filesystem.args` path in the config to match where you cloned the repo. The setup script does this automatically.
 
 ### MCP Servers
-- **filesystem**: Provides file read/write/search in `./workspace/`
+- **filesystem**: Provides file read/write/search in `.\workspace\`
 
 ## Project Structure
 
 ```
-openclaw-agent/
-├── .env                    # Environment variables
-├── .venv/                  # Python virtual environment
-├── README.md               # This file
-├── workspace/              # Agent workspace (file operations target here)
-├── skills/                 # Skill definitions
+openclaw-agent-/
+├── .env                         # Environment variables
+├── .gitignore
+├── README.md                    # This file
+├── openclaw.json.template       # OpenClaw config template
+├── workspace/                   # Agent workspace (file operations target here)
+├── skills/                      # Skill definitions
 │   ├── browser-skill.md
 │   ├── code-skill.md
 │   └── filesystem-skill.md
 └── scripts/
-    ├── setup.sh            # Full setup script
-    ├── start.sh            # Launch the agent
-    └── stop.sh             # Stop all services
+    ├── setup.ps1                # Windows setup (PowerShell)
+    ├── start.ps1                # Launch the agent (PowerShell)
+    ├── stop.ps1                 # Stop all services (PowerShell)
+    ├── setup.sh                 # Linux/macOS setup (bash)
+    ├── start.sh                 # Linux/macOS launch (bash)
+    └── stop.sh                  # Linux/macOS stop (bash)
 ```
 
 ## Testing
@@ -96,8 +117,20 @@ Ask the agent: *"Solve the integral of x^3 * e^x dx using Python"*
 ### Filesystem Skill
 Ask the agent: *"Create a file called hello.txt with 'Hello World' in the workspace"*
 
-## Requirements
+## Troubleshooting
 
-- Node.js >= 22.14 (24 recommended)
-- Python 3.10+
-- 9Router running on `http://127.0.0.1:20128/v1`
+### PowerShell Execution Policy
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Gateway won't start
+- Ensure 9Router is running: `curl http://127.0.0.1:20128/v1/models`
+- Check config: `openclaw config validate`
+- Check logs: `openclaw gateway status`
+
+### Token auth
+After first run, the gateway generates an auth token. Get the tokenized URL:
+```powershell
+openclaw dashboard --no-open
+```

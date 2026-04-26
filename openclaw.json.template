@@ -5,7 +5,7 @@
       "model": {
         "primary": "9router/deepseek-v3"
       },
-      "workspace": "/home/ubuntu/openclaw-agent/workspace",
+      "workspace": "C:/openclaw-agent/workspace",
       "heartbeat": {
         "every": "5m"
       }
@@ -61,10 +61,6 @@
     "controlUi": {
       "enabled": true,
       "dangerouslyAllowHostHeaderOriginFallback": true
-    },
-    "auth": {
-      "mode": "token",
-      "token": "7506b792ff4e8375bffdc09a3e38ed637fa2e9db6a4c92c8"
     }
   },
   "plugins": {
@@ -84,13 +80,9 @@
         "command": "npx",
         "args": [
           "@modelcontextprotocol/server-filesystem",
-          "/home/ubuntu/openclaw-agent/workspace"
+          "C:/openclaw-agent/workspace"
         ]
       }
     }
-  },
-  "meta": {
-    "lastTouchedVersion": "2026.4.24",
-    "lastTouchedAt": "2026-04-26T11:46:17.254Z"
   }
 }
